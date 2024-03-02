@@ -25,20 +25,17 @@ public class SpringBeExampleService {
                 .build();
     }
 
-    public List<ExchangeRate> findAll() {
-        return repository.findAll();
+    public List<ExchangeRate> findAll(boolean useDB) {
+        if (useDB) {
+            return repository.findAll();
+        } else {
+            List<ExchangeRate> exchangeRates = getExchangeRatesFromSource();
+            repository.saveAll(exchangeRates);
+            return exchangeRates;
+        }
     }
 
-
-    public ExchangeRate save(ExchangeRate exchangeRate) {
-        return repository.save(exchangeRate);
-    }
-
-    public List<ExchangeRate> saveAll(List<ExchangeRate> exchangeRates) {
-        return repository.saveAll(exchangeRates);
-    }
-
-    public List<ExchangeRate> getExchangeRatesFromSource() {
+    private List<ExchangeRate> getExchangeRatesFromSource() {
         Mono<List<ExchangeRate>> exchangeRatesResult = exchangeRatesWebApi
                 .get()
                 .uri("https://webapi.developers.erstegroup.com/api/csas/public/sandbox/v2/rates/exchangerates?web-api-key=c52a0682-4806-4903-828f-6cc66508329e")

@@ -3,6 +3,7 @@ package org.example.springbeexample.controller;
 import org.example.springbeexample.data.ExchangeRate;
 import org.example.springbeexample.service.SpringBeExampleService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class SpringBeExampleController {
     }
 
     @RequestMapping("/exchange_rates")
-    public List<ExchangeRate> exchangeRates() {
-        return service.getExchangeRatesFromSource();
+    public List<ExchangeRate> exchangeRates(@RequestParam boolean usedb) {
+        return service.findAll(usedb);
     }
 }
