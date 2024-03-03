@@ -1,17 +1,22 @@
 package org.example.springbeexample;
 
+import org.example.springbeexample.data.ExchangeRate;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,17 +29,18 @@ public class HttpResponseTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-
     @Test
-    public void rootResponseTest() {
-        assertEquals("Hello World from Spring Boot",
-                testRestTemplate.getForObject("http://localhost:" + port + "/", String.class));
+    public void useDbFalseTest() {
+        String response =
+                testRestTemplate.getForObject("http://localhost:" + port + "/exchange_rates?usedb=false", String.class);
+        assertNotEquals("[]", response);
     }
 
     @Test
-    public void goodbyeResponseTest() {
-        assertEquals("Goodbye from SpringBoot",
-                testRestTemplate.getForObject("http://localhost:" + port + "/goodbye", String.class));
+    public void useDbTrueTest() {
+        String response =
+                testRestTemplate.getForObject("http://localhost:" + port + "/exchange_rates?usedb=false", String.class);
+        assertFalse( response.isBlank());
     }
 
 
