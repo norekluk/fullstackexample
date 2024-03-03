@@ -17,10 +17,9 @@ public class SpringBeExampleService {
     private final WebClient exchangeRatesWebApi;
 
     @Autowired
-    public SpringBeExampleService(final SpringBeExampleRepository repository, final WebClient.Builder webClientBuilder) {
+    public SpringBeExampleService(final SpringBeExampleRepository repository, final WebClient webClient) {
         this.repository = repository;
-        this.exchangeRatesWebApi = webClientBuilder
-                .build();
+        this.exchangeRatesWebApi = webClient;
     }
 
     public List<ExchangeRate> findAll(boolean useDB) {
@@ -36,7 +35,7 @@ public class SpringBeExampleService {
     private List<ExchangeRate> getExchangeRatesFromSource() {
         Mono<List<ExchangeRate>> exchangeRatesResult = exchangeRatesWebApi
                 .get()
-                .uri("https://webapi.developers.erstegroup.com/api/csas/public/sandbox/v2/rates/exchangerates?web-api-key=c52a0682-4806-4903-828f-6cc66508329e")
+                .uri("/rates/exchangerates?web-api-key=c52a0682-4806-4903-828f-6cc66508329e")
                 .retrieve().bodyToMono(new ParameterizedTypeReference<List<ExchangeRate>>() {
                 }).log();
 

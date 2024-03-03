@@ -11,7 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,17 +25,18 @@ public class HttpResponseTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-
     @Test
-    public void rootResponseTest() {
-        assertEquals("Hello World from Spring Boot",
-                testRestTemplate.getForObject("http://localhost:" + port + "/", String.class));
+    public void useDbFalseTest() {
+        String response =
+                testRestTemplate.getForObject("http://localhost:" + port + "/exchange_rates?usedb=false", String.class);
+        assertNotEquals("[]", response);
     }
 
     @Test
-    public void goodbyeResponseTest() {
-        assertEquals("Goodbye from SpringBoot",
-                testRestTemplate.getForObject("http://localhost:" + port + "/goodbye", String.class));
+    public void useDbTrueTest() {
+        String response =
+                testRestTemplate.getForObject("http://localhost:" + port + "/exchange_rates?usedb=false", String.class);
+        assertFalse( response.isBlank());
     }
 
 
