@@ -1,7 +1,7 @@
 
 # Full stack example
 
-Full stack example which shows...
+Intentionally meant to be fullstack but it is only backend part of the project. The BE downloads exchange rate data and saves them into MongoDB database. User can decide whether retrieva data from the database or from the original source.
 
 
 ## Run Locally
